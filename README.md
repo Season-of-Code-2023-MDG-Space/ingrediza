@@ -35,21 +35,7 @@ class _IngredizaState extends State<Ingrediza> {
     }
   }
 
-  File? image1;
-  Future pickImage1() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      textScanning = true;
-      final imageTemporary = File(image.path);
-      this.image = imageTemporary;
-      setState(() {});
-      getRecognizedText(imageTemporary);
-    } on PlatformException catch (e) {
-      textScanning = false;
-      print('Failed to Pick Image $e');
-    }
-  }
+ 
 
   void getRecognizedText(File image) async {
     final inputImage = InputImage.fromFilePath(image.path);
