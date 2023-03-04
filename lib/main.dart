@@ -26,26 +26,33 @@ class _IngredizaState extends State<Ingrediza> {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
-      this.image = imageTemporary;
+      final File imageTemporary = File(image.path);
+      return imageTemporary;
+      // this.image = imageTemporary;
+      // return image;
     } on PlatformException catch (e) {
       print('Failed to Pick Image $e');
     }
   }
 
-  void getRecognizedText(File image) async {
+  String getRecognizedText(File image) async {
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
     scannedText = "";
+    print("Recognized text");
+
     for (TextBlock block in recognizedText.blocks) {
+      print("block ke andar text");
+
       for (TextLine line in block.lines) {
         scannedText = scannedText + line.text + "\n";
       }
     }
     textScanning = false;
     setState(() {});
+    return scannedText;
   }
 
   @override
@@ -134,8 +141,9 @@ class _IngredizaState extends State<Ingrediza> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      pickImage(ImageSource.camera);
+                    setState(() async {
+                      final tempObj = await pickImage(ImageSource.camera);
+                      getRecognizedText(tempObj);
                     });
                   },
                   style: ElevatedButton.styleFrom(
