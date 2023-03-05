@@ -35,7 +35,7 @@ class _IngredizaState extends State<Ingrediza> {
     }
   }
 
-  String getRecognizedText(File image) async {
+  Future<String> getRecognizedText(File image) async {
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
@@ -53,6 +53,22 @@ class _IngredizaState extends State<Ingrediza> {
     textScanning = false;
     setState(() {});
     return scannedText;
+  }
+
+  String seprateWords(String paragraph) {
+    List<String> words = paragraph.split(' ');
+    String previousWord = '';
+    String filterWords = '';
+    for (String word in words) {
+      if (word == 'INS') {
+        filterWords = filterWords + "INS " + word + "\n";
+      }
+      if (word == 'e') {
+        filterWords = filterWords + "e" + word + "\n";
+      }
+      previousWord = word;
+    }
+    return filterWords;
   }
 
   @override
@@ -143,7 +159,7 @@ class _IngredizaState extends State<Ingrediza> {
                   onPressed: () {
                     setState(() async {
                       final tempObj = await pickImage(ImageSource.camera);
-                      getRecognizedText(tempObj);
+                      await getRecognizedText(tempObj);
                     });
                   },
                   style: ElevatedButton.styleFrom(
