@@ -75,13 +75,13 @@ class _IngredizaState extends State<Ingrediza> {
 
     for (String word in words) {
       if (previousWord == 'INS') {
-        filterWords = filterWords + "INS " + word + "\n";
+        filterWords = filterWords + "INS " + word + ',' + "\n";
       }
       if (previousWord == 'e') {
-        filterWords = filterWords + "e" + word + "\n";
+        filterWords = filterWords + "e" + word + ',' + "\n";
       }
       if (previousWord == '(INS') {
-        filterWords = filterWords + "INS " + word + "\n";
+        filterWords = filterWords + "INS " + word + ',' + "\n";
       }
       previousWord = word;
     }
@@ -248,7 +248,6 @@ class _IngredizaState extends State<Ingrediza> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => NextScreen(
-                        
                             scannedText: scannedText,
                             filteredWords: filterWords,
                           )),

@@ -5,7 +5,7 @@ import 'main.dart';
 class NextScreen extends StatelessWidget {
   final String scannedText;
   final String filteredWords;
-
+ 
   NextScreen({required this.scannedText, required this.filteredWords});
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class NextScreen extends StatelessWidget {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
+          
               Navigator.push(
                 context,
                 MaterialPageRoute(
