@@ -6,6 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'NextScreen.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MaterialApp(
       home: Ingrediza(),
@@ -20,7 +24,7 @@ class _IngredizaState extends State<Ingrediza> {
   File? image;
   bool textScanning = false;
   String scannedText = "";
-
+  String filterWords = '';
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -28,6 +32,8 @@ class _IngredizaState extends State<Ingrediza> {
 
       final File imageTemporary = File(image.path);
       return imageTemporary;
+      getRecognizedText(imageTemporary);
+
       // this.image = imageTemporary;
       // return image;
     } on PlatformException catch (e) {
@@ -58,7 +64,7 @@ class _IngredizaState extends State<Ingrediza> {
   String seprateWords(String paragraph) {
     List<String> words = paragraph.split(' ');
     String previousWord = '';
-    String filterWords = '';
+
     for (String word in words) {
       if (word == 'INS') {
         filterWords = filterWords + "INS " + word + "\n";
@@ -157,10 +163,12 @@ class _IngredizaState extends State<Ingrediza> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    setState(() async {
+                    void _fetchData() async {
                       final tempObj = await pickImage(ImageSource.camera);
-                      await getRecognizedText(tempObj);
-                    });
+                      final recText = await getRecognizedText(tempObj);
+                    }
+
+                    setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -201,6 +209,19 @@ class _IngredizaState extends State<Ingrediza> {
                 ),
               ],
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NextScreen(
+                            scannedText: scannedText,
+                            filteredWords: filterWords,
+                          )),
+                );
+              },
+              child: Text('SUBMIT'),
+            )
           ],
         ),
       ),
