@@ -21,27 +21,36 @@ class Ingrediza extends StatefulWidget {
 }
 
 class _IngredizaState extends State<Ingrediza> {
-  File? image;
+  XFile? imageFile;
   bool textScanning = false;
   String scannedText = "";
   String filterWords = '';
   Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
+      final pickedImage = await ImagePicker().pickImage(source: source);
+      // if (image == null) return;
 
-      final File imageTemporary = File(image.path);
-      return imageTemporary;
-      getRecognizedText(imageTemporary);
-
+      // final File imageTemporary = File(image.path);
+      // return imageTemporary;
+      // getRecognizedText(imageTemporary);
       // this.image = imageTemporary;
       // return image;
+      if (pickedImage != null) {
+        textScanning = true;
+        imageFile = pickedImage;
+        setState(() {});
+
+        getRecognizedText(pickedImage);
+      }
     } on PlatformException catch (e) {
+      textScanning = false;
+      imageFile = null;
       print('Failed to Pick Image $e');
+      setState(() {});
     }
   }
 
-  Future<String> getRecognizedText(File image) async {
+  void getRecognizedText(XFile image) async {
     final inputImage = InputImage.fromFilePath(image.path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
@@ -58,7 +67,6 @@ class _IngredizaState extends State<Ingrediza> {
     }
     textScanning = false;
     setState(() {});
-    return scannedText;
   }
 
   String seprateWords(String paragraph) {
@@ -130,31 +138,50 @@ class _IngredizaState extends State<Ingrediza> {
             SizedBox(
               height: 30.0,
             ),
-            if (textScanning) CircularProgressIndicator(),
-            image != null
-                ? Image.file(
-                    image!,
-                    height: 100,
-                    width: 300,
+            if (textScanning) const CircularProgressIndicator(),
+            // image != null
+            //     ? Image.file(
+            //         image!,
+            //         height: 100,
+            //         width: 300,
+            //         fit: BoxFit.cover,
+            //       )
+            //     : Container(
+            //         width: 300,
+            //         height: 100,
+            //         padding: EdgeInsets.all(20.0),
+            //         margin: EdgeInsets.all(20.0),
+            //         child: Text(
+            //           'DROP YOUR IMAGES HERE',
+            //           textAlign: TextAlign.center,
+            //           style: TextStyle(
+            //             letterSpacing: 2.0,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+            //         decoration: BoxDecoration(
+            //           color: Colors.grey,
+            //         ),
+            //       ),
+            if (!textScanning && imageFile == null)
+              Container(
+                width: 300,
+                height: 100,
+                color: Colors.grey[300]!,
+              ),
+
+            if (imageFile != null)
+              SizedBox(
+                width: 300,
+                height: 100,
+                child: SingleChildScrollView(
+                  child: Image.file(
+                    File(imageFile!.path),
                     fit: BoxFit.cover,
-                  )
-                : Container(
-                    width: 300,
-                    height: 100,
-                    padding: EdgeInsets.all(20.0),
-                    margin: EdgeInsets.all(20.0),
-                    child: Text(
-                      'DROP YOUR IMAGES HERE',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                    ),
                   ),
+                ),
+              ),
+
             SizedBox(
               height: 30.0,
             ),
@@ -163,12 +190,14 @@ class _IngredizaState extends State<Ingrediza> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    void _fetchData() async {
-                      final tempObj = await pickImage(ImageSource.camera);
-                      final recText = await getRecognizedText(tempObj);
-                    }
+                    // void _fetchData() async {
+                    //   final tempObj = await pickImage(ImageSource.camera);
+                    //   final recText = await getRecognizedText(tempObj);
+                    // }
 
-                    setState(() {});
+                    // setState(() {
+                    pickImage(ImageSource.camera);
+                    // });
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -189,9 +218,9 @@ class _IngredizaState extends State<Ingrediza> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      pickImage(ImageSource.gallery);
-                    });
+                    // setState(() {
+                    pickImage(ImageSource.gallery);
+                    // });
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
