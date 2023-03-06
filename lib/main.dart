@@ -69,20 +69,23 @@ class _IngredizaState extends State<Ingrediza> {
     setState(() {});
   }
 
-  String seprateWords(String paragraph) {
+  void seprateWords(String paragraph) {
     List<String> words = paragraph.split(' ');
     String previousWord = '';
 
     for (String word in words) {
-      if (word == 'INS') {
+      if (previousWord == 'INS') {
         filterWords = filterWords + "INS " + word + "\n";
       }
-      if (word == 'e') {
+      if (previousWord == 'e') {
         filterWords = filterWords + "e" + word + "\n";
+      }
+      if (previousWord == '(INS') {
+        filterWords = filterWords + "INS " + word + "\n";
       }
       previousWord = word;
     }
-    return filterWords;
+    //return filterWords;
   }
 
   @override
@@ -240,10 +243,12 @@ class _IngredizaState extends State<Ingrediza> {
             ),
             ElevatedButton(
               onPressed: () {
+                seprateWords(scannedText);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => NextScreen(
+                        
                             scannedText: scannedText,
                             filteredWords: filterWords,
                           )),

@@ -16,8 +16,14 @@ class NextScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Scanned Text: $scannedText'),
-          Text('Filtered Text: $filteredWords'),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Text('Scanned Text: $scannedText'),
+                Text('Filtered Text: $filteredWords'),
+              ],
+            ),
+          ),
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
