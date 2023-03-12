@@ -12,19 +12,33 @@ import 'package:chat_gpt_api/chat_gpt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class chat extends StatelessWidget {
-  String result;
-  chat({required this.result});
+class Chat extends StatefulWidget {
+  final String result;
+
+  const Chat({required this.result});
+
+  @override
+  _ChatState createState() => _ChatState();
+}
+
+class _ChatState extends State<Chat> {
   Future<String>? resultFuture;
   final chatGpt = ChatGPT.builder(
     token: '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',
   );
 
+  @override
+  void initState() {
+    super.initState();
+    resultFuture = complete();
+    print("ho rha h");
+  }
+
   Future<String> complete() async {
     try {
       Completion? completion = await chatGpt.textCompletion(
         request: CompletionRequest(
-          prompt: "Dangers of eating $result ",
+          prompt: "Dangers of eating ${widget.result} ",
           maxTokens: 256,
         ),
       );
@@ -42,12 +56,6 @@ class chat extends StatelessWidget {
       print('Error completing text: $e');
       return '';
     }
-  }
-
-  @override
-  void initState() {
-    resultFuture = complete();
-    print("ho rha h");
   }
 
   @override

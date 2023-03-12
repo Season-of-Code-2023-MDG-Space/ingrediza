@@ -37,7 +37,7 @@ class NextScreen extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => chat(
+                      builder: (context) => Chat(
                        result: filteredWords,         
                           )
                           ),
