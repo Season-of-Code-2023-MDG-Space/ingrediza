@@ -12,14 +12,9 @@ import 'package:chat_gpt_api/chat_gpt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class chat extends StatefulWidget {
-  chat({Key? key}) : super(key: key);
-
-  @override
-  _chatState createState() => _chatState();
-}
-
-class _chatState extends State<chat> {
+class chat extends StatelessWidget {
+  String result;
+  chat({required this.result});
   Future<String>? resultFuture;
   final chatGpt = ChatGPT.builder(
     token: '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',
@@ -29,7 +24,7 @@ class _chatState extends State<chat> {
     try {
       Completion? completion = await chatGpt.textCompletion(
         request: CompletionRequest(
-          prompt: "Dangers of drinking alcohol ",
+          prompt: "Dangers of eating $result ",
           maxTokens: 256,
         ),
       );
@@ -51,7 +46,6 @@ class _chatState extends State<chat> {
 
   @override
   void initState() {
-    super.initState();
     resultFuture = complete();
     print("ho rha h");
   }
@@ -91,49 +85,3 @@ class _chatState extends State<chat> {
     );
   }
 }
-
-// class chat extends StatelessWidget {
-//   String result;
-//   chat({required this.result});
-
-//   final chatGpt = ChatGPT.builder(
-//       token: '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');
-
-//   void complete() async {
-//     print('karo');
-//     print(result);
-//     try {
-//       Completion? completion = await chatGpt.textCompletion(
-//         request: CompletionRequest(
-//           prompt: "Dangers of drinking alcohol ",
-//           maxTokens: 256,
-//         ),
-//       );
-//       if (kDebugMode) {
-//         print(completion?.choices);
-//       }
-//     } catch (e) {
-//       print('Error completing text: $e');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     complete();
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Title(
-//           color: Color.fromARGB(255, 35, 71, 37),
-//           child: Text(
-//             'Harmful Effects',
-//             style: TextStyle(
-//               fontSize: 30,
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//         ),
-//       ),
-//       body: Text('hello'),
-//     );
-//   }
-// }
