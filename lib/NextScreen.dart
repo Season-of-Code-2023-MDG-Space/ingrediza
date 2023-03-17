@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:ingrediza_dummy1/chatgpt.dart';
+import 'API.dart';
 import 'main.dart';
 import 'logic.dart';
 import 'chat.dart';
@@ -37,7 +38,7 @@ class NextScreen extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Chat(
+                      builder: (context) => API(
                        result: filteredWords,         
                           )
                           ),
