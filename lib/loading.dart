@@ -11,7 +11,7 @@ class loading extends StatefulWidget {
 class _loadingState extends State<loading> {
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/UI');
     });
   }

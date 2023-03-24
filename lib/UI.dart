@@ -58,18 +58,19 @@ class _UIState extends State<UI> with logic_mixin {
               height: 50.0,
             ),
             Align(
+              alignment: Alignment.center,
               child: Text(
                 'Click The Picture of Ingredients',
                 style: TextStyle(
                   color: Colors.black,
-                  letterSpacing: 5.0,
+                  letterSpacing: 2.0,
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             SizedBox(
-              height: 30.0,
+              height: 50.0,
             ),
             if (textScanning) const CircularProgressIndicator(),
             if (!textScanning && imageFile == null)
@@ -114,7 +115,7 @@ class _UIState extends State<UI> with logic_mixin {
                   child: const Text('CAMERA'),
                 ),
                 SizedBox(
-                  width: 50.0,
+                  width: 10.0,
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -136,6 +137,9 @@ class _UIState extends State<UI> with logic_mixin {
                 ),
               ],
             ),
+            SizedBox(
+              height: 40.0,
+            ),
             ElevatedButton(
               onPressed: () {
                 seprateWords(scannedText);
@@ -148,6 +152,18 @@ class _UIState extends State<UI> with logic_mixin {
                           )),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                backgroundColor: Color.fromARGB(255, 0, 104, 3),
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 5.0,
+                ),
+              ),
               child: Text('SUBMIT'),
             )
           ],
