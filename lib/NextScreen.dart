@@ -53,6 +53,7 @@ class NextScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
@@ -68,105 +69,98 @@ class NextScreen extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 0, 104, 3),
         elevation: 30.0,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Expanded(
-                flex: 1,
-                child: SingleChildScrollView(
-                  child: ListView(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'SCANNED TEXT: ',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 24, 58, 41),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '$scannedText',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'SCANNED TEXT: ',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 24, 58, 41),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'FILTERED TEXT: ',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 24, 58, 41),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '$filteredWords',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
+                      TextSpan(
+                        text: '$scannedText',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(height: 20),
-          FutureBuilder(
-            future: createPost(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Color.fromARGB(255, 21, 66, 23)),
-                ));
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                Future.delayed(Duration.zero, () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Result(
-                        myresult: snapshot.data,
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'FILTERED TEXT: ',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 24, 58, 41),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
-                  );
-                });
-                return Container();
-              } else {
-                return Text('Error: ${snapshot.error}');
-              }
-            },
+                    TextSpan(
+                      text: '$filteredWords',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              FutureBuilder(
+                future: createPost(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Color.fromARGB(255, 21, 66, 23)),
+                    ));
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    Future.delayed(Duration.zero, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Result(
+                            myresult: snapshot.data,
+                          ),
+                        ),
+                      );
+                    });
+                    return Container();
+                  } else {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
