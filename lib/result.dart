@@ -21,14 +21,23 @@ class Result extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 0, 104, 3),
         elevation: 30.0,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 40),
         child: Text(
           myresult,
           style: TextStyle(
             height: 1.5,
             fontWeight: FontWeight.bold,
             fontSize: 15,
+          ),
+        ),
+      ),
+            ]
           ),
         ),
       ),

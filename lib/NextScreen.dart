@@ -10,14 +10,6 @@ class NextScreen extends StatelessWidget {
   final String scannedText;
   final String filteredWords;
   bool _isLoading = false;
-  List<String> excludedWords = [
-    'role',
-    ':',
-    'assistant',
-    'content:',
-    '\n\n',
-    '\n\nAs,'
-  ];
 
   NextScreen({required this.scannedText, required this.filteredWords});
 
@@ -29,7 +21,7 @@ class NextScreen extends StatelessWidget {
       Uri.parse('https://chatgpt-openai.p.rapidapi.com/chat-completion'),
       headers: {
         'content-type': 'application/json',
-        'X-RapidAPI-Key': 'c09e28d0a2mshd6a6e0dfc7bcad8p106d78jsn18f5991451a3',
+        'X-RapidAPI-Key': '3824ee5d2dmshd89e28934e257bap1296e2jsn11ce2e567b44',
         'X-RapidAPI-Host': 'chatgpt-openai.p.rapidapi.com'
       },
       body: jsonEncode({
@@ -142,12 +134,27 @@ class NextScreen extends StatelessWidget {
                           Color.fromARGB(255, 21, 66, 23)),
                     ));
                   } else if (snapshot.connectionState == ConnectionState.done) {
+                    String data = snapshot.data;
+
+                    data = data.replaceAll("role", "");
+                    data = data.replaceAll("assistant", "");
+                    data = data.replaceAll("content", "");
+                    data = data.replaceAll(":", "");
+                    data = data.replaceAll("\n\n", "");
+                    data = data.replaceAll("\n\nAs", "");
+                    data = data.replaceAll("{", "");
+                    data = data.replaceAll("}", "");
+                    data = data.replaceAll(".}", "");
+                    data = data.replaceAll("\'", "");
+                    data = data.replaceAll("\"", "");
+                    data = data.replaceAll("\n\nAsINS", "INS");
+                    data = data.replaceAll("\n\nINS", "INS");
                     Future.delayed(Duration.zero, () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => Result(
-                            myresult: snapshot.data,
+                            myresult: data,
                           ),
                         ),
                       );
