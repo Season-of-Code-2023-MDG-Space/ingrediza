@@ -21,7 +21,7 @@ class NextScreen extends StatelessWidget {
       Uri.parse('https://chatgpt-openai.p.rapidapi.com/chat-completion'),
       headers: {
         'content-type': 'application/json',
-        'X-RapidAPI-Key': 'b115486d21msh6233601e6f3539fp18acaajsn71aada34e621',
+        'X-RapidAPI-Key': '643fdbf8damsh0a5d72cb3093e4ep1255f0jsnf9344b8f4d02',
         'X-RapidAPI-Host': 'chatgpt-openai.p.rapidapi.com'
       },
       body: jsonEncode({
