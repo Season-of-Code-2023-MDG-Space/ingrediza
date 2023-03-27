@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'main.dart';
 
-mixin logic_mixin <UI extends StatefulWidget> on State<UI> {
+mixin logic_mixin<UI extends StatefulWidget> on State<UI> {
   XFile? imageFile;
   bool textScanning = false;
   String scannedText = "";
@@ -68,7 +68,5 @@ mixin logic_mixin <UI extends StatefulWidget> on State<UI> {
       }
       previousWord = word;
     }
-    
   }
 }
-

@@ -21,7 +21,7 @@ class NextScreen extends StatelessWidget {
       Uri.parse('https://chatgpt-openai.p.rapidapi.com/chat-completion'),
       headers: {
         'content-type': 'application/json',
-        'X-RapidAPI-Key': '3824ee5d2dmshd89e28934e257bap1296e2jsn11ce2e567b44',
+        'X-RapidAPI-Key': 'b115486d21msh6233601e6f3539fp18acaajsn71aada34e621',
         'X-RapidAPI-Host': 'chatgpt-openai.p.rapidapi.com'
       },
       body: jsonEncode({
@@ -135,18 +135,28 @@ class NextScreen extends StatelessWidget {
                     ));
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     String data = snapshot.data;
+                    List<String> stringsToReplace = [
+                      "role",
+                      "assistant",
+                      "content",
+                      ":",
+                      "{",
+                      "}",
+                      ".}",
+                      "\'",
+                      "\"",
+                      "\n\nAsINS",
+                      "\n\nINS",
+                      "\n\n5.",
+                      "\n\n3.",
+                      "\n\n4.",
+                      "\n\n6."
+                    ];
 
-                    data = data.replaceAll("role", "");
-                    data = data.replaceAll("assistant", "");
-                    data = data.replaceAll("content", "");
-                    data = data.replaceAll(":", "");
-                    data = data.replaceAll("\n\n", "");
-                    data = data.replaceAll("\n\nAs", "");
-                    data = data.replaceAll("{", "");
-                    data = data.replaceAll("}", "");
-                    data = data.replaceAll(".}", "");
-                    data = data.replaceAll("\'", "");
-                    data = data.replaceAll("\"", "");
+                    for (String s in stringsToReplace) {
+                      data = data.replaceAll(s, "");
+                    }
+
                     data = data.replaceAll("\n\nAsINS", "INS");
                     data = data.replaceAll("\n\nINS", "INS");
                     Future.delayed(Duration.zero, () {
