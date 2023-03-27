@@ -145,8 +145,6 @@ class NextScreen extends StatelessWidget {
                       ".}",
                       "\'",
                       "\"",
-                      "\n\nAsINS",
-                      "\n\nINS",
                       "\n\n5.",
                       "\n\n3.",
                       "\n\n4.",
